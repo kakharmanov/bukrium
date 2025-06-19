@@ -484,6 +484,7 @@ onMounted(() => {
 .rating-value {
   font-size: 1.1rem;
   color: var(--text-color);
+
 }
 
 .user-rating {

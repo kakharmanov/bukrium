@@ -292,7 +292,7 @@ onMounted(() => {
         </div>
 
         <div v-if="readBooks.length > 0" class="profile-section read-books">
-          <h2>Прочитанные книги</h2>
+          <h2  :style="{ color: themeStore?.isDarkMode ? '#fff' : '' }">Прочитанные книги</h2>
 
           <div class="books-grid">
             <BookCard

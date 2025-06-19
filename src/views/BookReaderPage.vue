@@ -23,10 +23,10 @@ const fontFamily = computed(() => themeStore.readerFontFamily)
 // Вычисляем количество страниц в книге
 const totalPages = computed(() => {
   if (!book.value?.content) return 1
-  
+
   // Приблизительное количество символов на странице
   const charsPerPage = 1800
-  
+
   // Количество страниц (округляем в большую сторону)
   return Math.ceil(book.value.content.length / charsPerPage)
 })
@@ -34,18 +34,18 @@ const totalPages = computed(() => {
 // Определяем содержимое текущей страницы
 const currentPageContent = computed(() => {
   if (!book.value?.content) return ''
-  
+
   const charsPerPage = 1800
   const startChar = (currentPage.value - 1) * charsPerPage
   const endChar = Math.min(startChar + charsPerPage, book.value.content.length)
-  
+
   return book.value.content.substring(startChar, endChar)
 })
 
 // Получаем прогресс чтения книги
 const readingProgress = computed(() => {
   if (!userStore.currentUser || !book.value) return null
-  
+
   return userStore.currentUser.readingProgress.find(
     p => p.bookId === book.value?.id
   )
@@ -54,7 +54,7 @@ const readingProgress = computed(() => {
 // Определяем и форматируем прогресс чтения в процентах
 const progressPercent = computed(() => {
   if (!book.value) return 0
-  
+
   const percent = (currentPage.value / totalPages.value) * 100
   return Math.round(percent)
 })
@@ -97,7 +97,7 @@ const goToPage = (page: number) => {
 
 const saveProgress = () => {
   if (!book.value) return
-  
+
   userStore.updateReadingProgress(
     book.value.id,
     currentPage.value,
@@ -107,14 +107,14 @@ const saveProgress = () => {
 
 const toggleBookmark = () => {
   const index = bookmarks.value.indexOf(currentPage.value)
-  
+
   if (index >= 0) {
     bookmarks.value.splice(index, 1)
   } else {
     bookmarks.value.push(currentPage.value)
     bookmarks.value.sort((a, b) => a - b)
   }
-  
+
   // Сохраняем закладки в localStorage
   localStorage.setItem(
     `bookmarks_${bookId.value}`,
@@ -163,13 +163,13 @@ watch(() => book.value, () => {
 onMounted(() => {
   // Добавляем обработчик клавиатуры
   window.addEventListener('keydown', handleKeyPress)
-  
+
   // Загружаем закладки из localStorage
   const savedBookmarks = localStorage.getItem(`bookmarks_${bookId.value}`)
   if (savedBookmarks) {
     bookmarks.value = JSON.parse(savedBookmarks)
   }
-  
+
   setTimeout(() => {
     isLoading.value = false
   }, (window as any).fakeDelay || 500)
@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
       <div class="loading-spinner"></div>
       <div>Загрузка книги...</div>
     </div>
-    
+
     <div v-else-if="!book" class="error-container">
       <i class="pi pi-exclamation-circle error-icon"></i>
       <h2>Книга не найдена</h2>
@@ -196,21 +196,21 @@ onBeforeUnmount(() => {
         Вернуться к списку книг
       </button>
     </div>
-    
+
     <template v-else>
       <div class="reader-header" :class="{ 'visible': isControlsVisible }">
         <div class="reader-header-content">
           <button class="header-btn back-btn" @click="exitReader">
             <i class="pi pi-arrow-left"></i>
           </button>
-          
+
           <div class="book-info">
             <h1 class="book-title">{{ book.title }}</h1>
             <p class="book-author">{{ book.author }}</p>
           </div>
-          
-          <button 
-            class="header-btn bookmark-btn" 
+
+          <button
+            class="header-btn bookmark-btn"
             :class="{ active: isCurrentPageBookmarked }"
             @click="toggleBookmark"
           >
@@ -218,7 +218,7 @@ onBeforeUnmount(() => {
           </button>
         </div>
       </div>
-      
+
       <div class="reader-content" @click="toggleControls">
         <div class="book-content" :style="readerStyles">
           <p v-for="(paragraph, index) in currentPageContent.split('\n\n')" :key="index">
@@ -226,18 +226,18 @@ onBeforeUnmount(() => {
           </p>
         </div>
       </div>
-      
+
       <div class="reader-footer" :class="{ 'visible': isControlsVisible }">
         <div class="reader-footer-content">
           <div class="page-navigation">
-            <button 
-              class="nav-btn prev-btn" 
+            <button
+              class="nav-btn prev-btn"
               @click.stop="goToPrevPage"
               :disabled="currentPage <= 1"
             >
               <i class="pi pi-chevron-left"></i>
             </button>
-            
+
             <div class="page-info">
               <span>{{ currentPage }} из {{ totalPages }}</span>
               <div class="progress-bar">
@@ -245,36 +245,36 @@ onBeforeUnmount(() => {
               </div>
               <span class="progress-percent">{{ progressPercent }}%</span>
             </div>
-            
-            <button 
-              class="nav-btn next-btn" 
+
+            <button
+              class="nav-btn next-btn"
               @click.stop="goToNextPage"
               :disabled="currentPage >= totalPages"
             >
               <i class="pi pi-chevron-right"></i>
             </button>
           </div>
-          
+
           <div class="reader-settings">
             <div class="setting-group">
               <span>Шрифт:</span>
               <div class="setting-buttons">
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   :class="{ active: fontFamily === 'Georgia' }"
                   @click.stop="changeFontFamily('Georgia')"
                 >
                   A
                 </button>
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   :class="{ active: fontFamily === 'Times New Roman' }"
                   @click.stop="changeFontFamily('Times New Roman')"
                 >
                   A
                 </button>
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   :class="{ active: fontFamily === 'Arial' }"
                   @click.stop="changeFontFamily('Arial')"
                 >
@@ -282,58 +282,58 @@ onBeforeUnmount(() => {
                 </button>
               </div>
             </div>
-            
+
             <div class="setting-group">
               <span>Размер:</span>
               <div class="setting-buttons">
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   @click.stop="changeFontSize(Math.max(14, fontSize - 2))"
                 >
                   A-
                 </button>
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   @click.stop="changeFontSize(Math.min(24, fontSize + 2))"
                 >
                   A+
                 </button>
               </div>
             </div>
-            
+
             <div class="setting-group">
               <span>Интервал:</span>
               <div class="setting-buttons">
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   @click.stop="changeLineHeight(Math.max(1.2, lineHeight - 0.2))"
                 >
                   <i class="pi pi-minus"></i>
                 </button>
-                <button 
-                  class="setting-btn" 
+                <button
+                  class="setting-btn"
                   @click.stop="changeLineHeight(Math.min(2.0, lineHeight + 0.2))"
                 >
                   <i class="pi pi-plus"></i>
                 </button>
               </div>
             </div>
-            
+
             <div class="setting-group">
-              <button 
-                class="theme-btn" 
+              <button
+                class="theme-btn"
                 @click.stop="themeStore.toggleDarkMode()"
               >
                 <i class="pi" :class="themeStore.isDarkMode ? 'pi-sun' : 'pi-moon'"></i>
               </button>
             </div>
           </div>
-          
+
           <div v-if="bookmarks.length > 0" class="bookmarks-section">
             <h3>Закладки:</h3>
             <div class="bookmarks-list">
-              <button 
-                v-for="bookmark in bookmarks" 
+              <button
+                v-for="bookmark in bookmarks"
                 :key="bookmark"
                 class="bookmark-item"
                 :class="{ active: currentPage === bookmark }"
@@ -662,8 +662,8 @@ onBeforeUnmount(() => {
 .dark-theme {
   --background-color: #121212;
   --card-background: #1e1e1e;
-  --text-color: #e5e5e5;
-  --text-color-light: #a0a0a0;
+  --text-color: #95acc3;
+  --text-color-light: #5e7fa7;
   --border-color: #333333;
 }
 
@@ -671,24 +671,24 @@ onBeforeUnmount(() => {
   .reader-content {
     padding: 0.5rem;
   }
-  
+
   .book-content {
     padding: 1.5rem;
   }
-  
+
   .reader-header-content,
   .reader-footer-content {
     padding: 0.75rem;
   }
-  
+
   .reader-settings {
     gap: 1rem;
   }
-  
+
   .setting-group {
     font-size: 0.9rem;
   }
-  
+
   .setting-btn {
     padding: 0.3rem 0.5rem;
   }
