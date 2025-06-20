@@ -74,6 +74,7 @@ button:focus-visible {
   --background-color: #0f172a;
   --card-background: #1e293b;
   --border-color: #334155;
+  color: #cbd5e1;
 }
 
 .container {

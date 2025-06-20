@@ -142,26 +142,26 @@ onMounted(() => {
             </div>
 
             <div class="book-info">
-              <h2 class="book-title">{{ book.title }}</h2>
-              <p class="book-author">{{ book.author }}</p>
+              <h2 class="book-title" style="color:#1e293b">{{ book.title }}</h2>
+              <p class="book-author" style="color:#64748b">{{ book.author }}</p>
 
               <div class="book-meta">
                 <div class="meta-item">
                   <i class="pi pi-calendar"></i>
-                  <span>{{ book.publishYear }} г.</span>
+                  <span style="color:#64748b">{{ book.publishYear }} г.</span>
                 </div>
                 <div class="meta-item">
                   <i class="pi pi-file"></i>
-                  <span>{{ book.pageCount }} стр.</span>
+                  <span style="color:#64748b">{{ book.pageCount }} стр.</span>
                 </div>
                 <div class="meta-item">
                   <i class="pi pi-tag"></i>
-                  <span>{{ book.genres.join(', ') }}</span>
+                  <span style="color:#64748b">{{ book.genres.join(', ') }}</span>
                 </div>
               </div>
 
               <div class="book-rating-container">
-                <h3>Рейтинг</h3>
+                <h3 style="color:#1e293b">Рейтинг</h3>
                 <div class="book-rating">
                   <div class="rating-stars large">
                     <div class="stars-background">
@@ -174,13 +174,13 @@ onMounted(() => {
                       <i v-for="n in 5" :key="n" class="pi pi-star-fill"></i>
                     </div>
                   </div>
-                  <span class="rating-value"
+                  <span class="rating-value" style="color:#1e293b"
                     >{{ book.rating }} ({{ book.ratingsCount }})</span
                   >
                 </div>
 
                 <div class="user-rating">
-                  <h4>Ваша оценка</h4>
+                  <h4 style="color:#1e293b">Ваша оценка</h4>
                   <div class="rating-input">
                     <button
                       v-for="n in 5"
